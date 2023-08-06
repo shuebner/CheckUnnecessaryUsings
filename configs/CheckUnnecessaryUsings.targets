@@ -1,0 +1,15 @@
+<Project>
+    <Target Name="__TriggerUnnecessaryUsingsCheck" BeforeTargets="CoreCompile">
+        <!-- Condition to let consuming projects enable documentation file generation themselves -->
+        <ItemGroup Condition="'$(GenerateDocumentationFile)' != 'true'">
+            <!-- Trigger compiler check for unnecessary usings -->
+            <DocFileItem Include="$(IntermediateOutputPath)DummyDocForUnnecessaryUsings.xml" />
+        </ItemGroup>
+        <PropertyGroup Condition="'$(GenerateDocumentationFile)' != 'true'">
+            <!-- we do not want the dummy file in the output folder -->
+            <CopyDocumentationFileToOutputDirectory>false</CopyDocumentationFileToOutputDirectory>
+            <!-- Disable warnings about missing XML doc comments -->
+            <NoWarn>$(NoWarn);CS1591;CS1573</NoWarn>
+        </PropertyGroup>
+    </Target>
+</Project>

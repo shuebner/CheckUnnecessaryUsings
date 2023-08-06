@@ -1,0 +1,30 @@
+<Project>
+    <ItemGroup>
+        <!-- use latest local temp package version -->
+        <PackageReference Include="SvSoft.MSBuild.CheckUnnecessaryUsings" Version="*-test.*" PrivateAssets="all" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <__UtcTicks>$([System.DateTimeOffset]::Now.UtcTicks)</__UtcTicks>
+        <!-- create some strictly increasing version number -->
+        <__TempPackageVersion>1.0.0-test.$(__UtcTicks)</__TempPackageVersion>
+        <__TempPackageOutputPath>$(MSBuildThisFileDirectory)../_out</__TempPackageOutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <!-- restore from the temp package build output folder -->
+        <RestoreAdditionalProjectSources>$(RestoreAdditionalProjectSources);$(__TempPackageOutputPath)</RestoreAdditionalProjectSources>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <__PackageProjectPath>$(MSBuildThisFileDirectory)../package/CheckUnnecessaryUsings.csproj</__PackageProjectPath>
+    </PropertyGroup>
+
+    <!-- Build a temp package on every restore. -->
+    <Target Name="__PackTempPackage" BeforeTargets="Restore">
+        <MSBuild Targets="restore" Projects="$(__PackageProjectPath)" />
+        <MSBuild Targets="pack"
+                 Projects="$(__PackageProjectPath)"
+                 Properties="OutputPath=$(__TempPackageOutputPath);Version=$(__TempPackageVersion)" />
+    </Target>
+</Project>
