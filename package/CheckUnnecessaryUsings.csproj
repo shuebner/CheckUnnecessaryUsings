@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Pack">
+    <PropertyGroup>
+        <PackageId>SvSoft.MSBuild.CheckUnnecessaryUsings</PackageId>
+        <Title>Enable IDE0005 Unnecessary Usings Check</Title>
+        <Description>Applies a workaround so that consuming projects can have IDE0005 (Unnecessary Usings) checked in their compile-time build. Projects can still choose to enable XML doc file generation without interference from this workaround.</Description>
+        <Authors>Sven Hübner</Authors>
+        <PackageTags>msbuild;ide0005;usings</PackageTags>
+    </PropertyGroup>
+
+    <!-- Make this a no-code package. Use some bogus TFM to make the SDK happy. -->
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <NoBuild>true</NoBuild>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="all" />
+    </ItemGroup>
+    <PropertyGroup>
+        <PublishRepositoryurl>true</PublishRepositoryurl>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="../configs/*.globalconfig"
+              CopyToOutputDirectory="PreserveNewest"
+              Pack="true"
+              PackagePath="build" />
+
+        <None Include="../configs/*.props"
+              CopyToOutputDirectory="PreserveNewest"
+              Pack="true"
+              PackagePath="build/$(PackageId).props" />
+
+        <None Include="../configs/*.targets"
+              CopyToOutputDirectory="PreserveNewest"
+              Pack="true"
+              PackagePath="build/$(PackageId).targets" />
+    </ItemGroup>
+</Project>
