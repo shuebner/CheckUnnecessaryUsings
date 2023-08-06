@@ -22,4 +22,6 @@ But it has some disadvantages:
 * has to be manually disabled as soon as the project _does_ want real XML doc generation
 
 In contrast, this solution does not leave any unnecessary files in the output folder.
-It will also only trigger when `GenerateDocumentationFile` is `false` (default) in the consuming project. As soon as XML doc file generation is enabled by setting it to true, the workaround will no longer trigger and thus not have any unwanted side-effects.
+It will also only trigger when `GenerateDocumentationFile` is `false` (default) in the consuming project.
+As soon as XML doc file generation is enabled by setting it to true, the workaround will no longer trigger and thus not have any unwanted side-effects.
+In particular, the warnings about missing XML comments (CS1591 and CS1573) will be issued as expected.
